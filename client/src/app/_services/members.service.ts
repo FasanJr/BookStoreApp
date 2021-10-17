@@ -87,7 +87,18 @@ export class MembersService {
   deletePhotto(photoId: number) {
     return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
   }
-  private getPaginatedRsesult<T>(url: any, params: any) {
+
+  addLike(username: string) {
+    return this.http.post(this.baseUrl + 'likes/' + username, {})
+  }
+
+  getLikes (predicate: string, pageNumber: any, pageSize: any) {
+    let params = this.getPaginationHeaders(pageNumber, pageSize);
+    params = params.append('predicate', predicate);
+    return this.getPaginatedRsesult<Partial<Member[]>>(this.baseUrl + 'likes', params);
+  }
+
+  private getPaginatedRsesult<T>(url: string, params: HttpParams) {
     const paginatedResult: PaginatedResult<T> = new PaginatedResult<T>();
     return this.http.get<T>(url, { observe: 'response', params }).pipe(
       map(response => {
