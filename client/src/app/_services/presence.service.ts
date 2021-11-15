@@ -23,7 +23,7 @@ export class PresenceService {
   {
     this.hubconnection = new HubConnectionBuilder()
     .withUrl(this.hubUrl + 'presence', {
-      accessTokenFactory: () => user.token
+      accessTokenFactory: () => user.token || ''
     })
     .withAutomaticReconnect()
     .build()
